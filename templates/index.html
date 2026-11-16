@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="row mb-4">
+    <div class="col-md-12 text-center">
+        <h1 class="text-warning fw-bold">⚔️ Hero Dashboard</h1>
+        <p class="text-muted">Manage your skill trees, complete habits, and level up your life!</p>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Left Column: Skills & Daily Quests -->
+    <div class="col-md-8">
+        <h3 class="mb-3">Active Skills</h3>
+        {% if skills %}
+            <div class="row">
+                {% for skill in skills %}
+                    {% set xp_percentage = (skill["current_xp"] / skill["xp_to_next_level"]) * 100 %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card bg-secondary text-light h-100 shadow-sm border-warning">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h5 class="card-title fw-bold text-warning mb-0">{{ skill["name"] }}</h5>
+                                    <span class="badge bg-dark text-warning border border-warning">Lvl {{ skill["level"] }}</span>
+                                </div>
+                                <p class="card-text small text-light">{{ skill["description"] or "No description provided." }}</p>
+
+                                <!-- XP Progress Bar -->
+                                <div class="mb-1 d-flex justify-content-between small text-muted">
+                                    <span>XP: {{ skill["current_xp"] }} / {{ skill["xp_to_next_level"] }}</span>
+                                    <span>{{ xp_percentage | round(1) }}%</span>
+                                </div>
+                                <div class="progress bg-dark" style="height: 10px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{ xp_percentage }}%;" aria-valuenow="{{ skill['current_xp'] }}" aria-valuemin="0" aria-valuemax="{{ skill['xp_to_next_level'] }}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-secondary text-center">
+                No skill trees created yet! Use the form on the right to start your first skill tree.
+            </div>
+        {% endif %}
+
+        <hr class="my-4 border-secondary">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Daily Quests & Habits</h3>
+            <a href="/habits" class="btn btn-sm btn-outline-warning">+ Add Habit</a>
+        </div>
+
+        {% if habits %}
+            <div class="list-group">
+                {% for habit in habits %}
+                    <div class="list-group-item bg-secondary text-light border-dark d-flex justify-content-between align-items-center mb-2 rounded">
+                        <div>
+                            <h5 class="mb-1 {{ 'text-decoration-line-through text-muted' if habit['completed_today'] else 'text-warning' }}">
+                                {{ habit["title"] }}
+                            </h5>
+                            <small class="text-light">
+                                Skill: <span class="badge bg-dark text-info">{{ habit["skill_name"] }}</span> •
+                                Reward: <span class="text-warning fw-bold">+{{ habit["xp_reward"] }} XP</span> •
+                                Streak: 🔥 {{ habit["streak"] }}
+                            </small>
+                        </div>
+
+                        <div>
+                            {% if habit["completed_today"] %}
+                                <button class="btn btn-success btn-sm" disabled>✓ Completed</button>
+                            {% else %}
+                                <form action="/complete/{{ habit['id'] }}" method="post" class="m-0">
+                                    <button type="submit" class="btn btn-warning btn-sm fw-bold">Complete</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-secondary text-center">
+                No habits added yet! Click <strong>+ Add Habit</strong> to attach tasks to your skill trees.
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Right Column: Add New Skill Form -->
+    <div class="col-md-4">
+        <div class="card bg-secondary text-light p-4 shadow">
+            <h4 class="mb-3 text-warning">Create New Skill Tree</h4>
+            <form action="/" method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Skill Name</label>
+                    <input autocomplete="off" autofocus class="form-control" id="name" name="name" placeholder="e.g. Python Programming" type="text" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description (Optional)</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="What goals are tied to this skill?"></textarea>
+                </div>
+                <button type="submit" class="btn btn-warning w-100 fw-bold">Add Skill Tree</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
