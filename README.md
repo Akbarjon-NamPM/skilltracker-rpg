@@ -32,7 +32,8 @@ The project is structured following a modular Python Flask architecture backed b
 
 ### Setup & Installation
 To run SkillTracker RPG locally in a development environment:
-1. Clone or navigate into the `project` directory and install dependencies:
+First open the codespace and then run this code to the bush.
+1. Clone or navigate into the directory and install dependencies:
    ```bash
    python app.py
   
