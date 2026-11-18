@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card bg-secondary text-light p-4 shadow">
+            <h3 class="text-warning mb-3">📜 Create a New Quest / Habit</h3>
+
+            {% if not skills %}
+                <div class="alert alert-warning">
+                    You need at least one <strong>Skill Tree</strong> before creating habits!
+                    <a href="/" class="alert-link">Go back to the dashboard</a> to create one first.
+                </div>
+            {% else %}
+                <form action="/habits" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Habit / Quest Title</label>
+                        <input autocomplete="off" autofocus class="form-control" id="title" name="title" placeholder="e.g. Solve 1 LeetCode problem" type="text" required maxlength="100">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="skill_id" class="form-label">Target Skill Tree</label>
+                        <select class="form-select" id="skill_id" name="skill_id" required>
+                            <option value="" disabled selected>Select a skill tree...</option>
+                            {% for skill in skills %}
+                                <option value="{{ skill['id'] }}">{{ skill['name'] }} (Lvl {{ skill['level'] }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="xp_reward" class="form-label">Difficulty (XP Reward)</label>
+                            <select class="form-select" id="xp_reward" name="xp_reward" required>
+                                <option value="15">Easy (+15 XP)</option>
+                                <option value="25" selected>Medium (+25 XP)</option>
+                                <option value="50">Hard (+50 XP)</option>
+                                <option value="100">Epic (+100 XP)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="frequency" class="form-label">Frequency</label>
+                            <select class="form-select" id="frequency" name="frequency">
+                                <option value="daily" selected>Daily</option>
+                                <option value="weekly">Weekly</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="/" class="btn btn-outline-light">Cancel</a>
+                        <button type="submit" class="btn btn-warning fw-bold">Create Habit</button>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
