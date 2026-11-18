@@ -34,15 +34,3 @@ pip install -r requirements.txt
 python app.py
 ```
 Open http://127.0.0.1:5000. Without `DATABASE_URL` it uses a local `project.db` (SQLite, auto-created).
-
-## Deploy on Vercel
-Vercel detects Flask automatically (`app.py` exposes `app`), no config file needed.
-
-1. Push this folder to GitHub.
-2. Click the **Deploy with Vercel** button above (or import the repo at vercel.com/new).
-3. Add a free Postgres database: Vercel project → **Storage / Marketplace → Neon** → connect it. This sets `DATABASE_URL` for you.
-4. Add environment variable `SECRET_KEY` (generate with `python -c "import secrets; print(secrets.token_hex(32))"`).
-5. Optional: set `REPO_URL` to your GitHub URL to show a "Deploy your own on Vercel" link (opens in a new tab) in the app footer.
-6. Redeploy. Tables are created on first request.
-
-Why Postgres? Vercel's filesystem is read-only/ephemeral, so SQLite and file-based sessions lose data there.
