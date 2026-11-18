@@ -1,6 +1,6 @@
 # ⚔️ SkillTracker RPG
 
-#### 🔗 Live Demo: https://YOUR-PROJECT.vercel.app
+#### 🔗 Live Demo: https://skilltracker-rpg.vercel.app
 #### 🎥 Video Demo: https://youtu.be/woaKTKbUK2o
 
 > **How to try it:** open the live link, click **Register**, create an account, then add a skill tree (for example "Programming"), add a habit to it, and press **Complete** to earn XP.
@@ -89,19 +89,3 @@ python app.py
 ```
 
 Open http://127.0.0.1:5000. Without `DATABASE_URL` the app creates a local `project.db` automatically.
-
-## Deploy on Vercel
-
-1. Push the project to GitHub.
-2. Import the repository at vercel.com/new (Flask is detected automatically from `app.py`).
-3. Connect a free **Neon** Postgres database from the Vercel Marketplace; this sets `DATABASE_URL`.
-4. Add `SECRET_KEY` (generate with `python -c "import secrets; print(secrets.token_hex(32))"`).
-5. Redeploy. Tables are created on the first request.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FYOUR_USERNAME%2FYOUR_REPO&env=SECRET_KEY,DATABASE_URL)
-
-## Possible future improvements
-
-- Achievements and badges, a weekly progress chart, and reminders.
-- Editing existing habits and skills.
-- Password reset by email and a leaderboard between friends.
